@@ -3,6 +3,10 @@ package edu.illinois.cs.cs125.lab11;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.view.View;
+import android.widget.TextView;
+import android.support.design.widget.TextInputLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,7 +42,28 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        startAPICall("192.17.96.8");
+
+
+        final Button button = (Button) findViewById(R.id.test);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(final View v) {
+                TextInputLayout x = (TextInputLayout) findViewById(R.id.pass);
+                startAPICall(x.getEditText().getText().toString());
+            }
+        });
+        final Button button2 = (Button) findViewById(R.id.test2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(final View v) {
+                TextView tv = (TextView) findViewById(R.id.textView2);
+                tv.setText("cleared");
+            }
+        });
+    }
+
+    /**
+     * Inits Buttons.
+     */
+    private void addButtons() {
     }
 
     /**
@@ -87,7 +112,12 @@ public final class MainActivity extends AppCompatActivity {
         try {
             Log.d(TAG, response.toString(2));
             // Example of how to pull a field off the returned JSON object
+            TextView tv = (TextView) findViewById(R.id.textView2);
+
             Log.i(TAG, response.get("hostname").toString());
-        } catch (JSONException ignored) { }
+            tv.setText("City: " + response.get("city").toString() + "\nState: " + response.get("region").toString() + "\nCountry: " + response.get("country").toString());
+        } catch (JSONException ignored) {
+            Log.i(TAG, "ERRRRRROR");
+        }
     }
 }
